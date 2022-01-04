@@ -3,14 +3,6 @@
     <v-app-bar color="red" dark flat app>
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
       <v-toolbar-title><h1>{{ title }}</h1></v-toolbar-title>
-
-      <!--      <v-spacer></v-spacer>-->
-
-      <!--      <v-btn class="mx-2" fab dark small color="#b2aca8" v-for="link in links" :key="link.icon" router :to="link.route">-->
-      <!--        <v-icon dark>-->
-      <!--          {{ link.icon }}-->
-      <!--        </v-icon>-->
-      <!--      </v-btn>-->
     </v-app-bar>
 
     <v-navigation-drawer
@@ -26,6 +18,7 @@
       >
         <v-list-item-group
             v-model="group"
+            class="list"
             active-class="deep-white--text text--accent-4"
         >
           <v-list-item v-for="link in links" :key="link.text" router :to="link.route">
@@ -56,3 +49,6 @@ export default {
   }),
 }
 </script>
+<style scoped>
+
+</style>

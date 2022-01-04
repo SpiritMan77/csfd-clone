@@ -11,6 +11,11 @@ const routes = [
     component: Home
   },
   {
+    path: '/filmview',
+    name: 'filmview',
+    component: () => import('../views/FilmView.vue')
+  },
+  {
     path: '/wishlist',
     name: 'wishlist',
     component: () => import('../views/WishList.vue')
