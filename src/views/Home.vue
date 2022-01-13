@@ -4,11 +4,40 @@
       <v-row align="center">
         <h1>Films</h1>
         <v-spacer></v-spacer>
-        <v-btn class="mx-2 " fab dark small color="red">
+        <v-btn class="mx-2 " fab dark small color="red" to="/addfilm">
           <v-icon dark flat>
-            mdi-filter
+            mdi-plus
           </v-icon>
         </v-btn>
+
+        <div class="text-center">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                  class="mx-2 " fab dark small color="red"
+                  v-bind="attrs"
+                  v-on="on"
+              >
+                <v-icon dark flat>
+                  mdi-filter
+                </v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                  v-for="(film, index) in getFilms" :key="index"
+              >
+                <v-list-item-title v-for="genre in film.genres"
+                                   :key="genre">{{ film.genres[0] }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
+        <!--        <v-btn class="mx-2 " fab dark small color="red">-->
+        <!--          <v-icon dark flat>-->
+        <!--            mdi-filter-->
+        <!--          </v-icon>-->
+        <!--        </v-btn>-->
       </v-row>
 
       <v-row class="justify-content-md-right">
@@ -19,10 +48,11 @@
                 class="mx-auto"
             >
               <v-img
-                  :src="'../assets/img/' + film.image"
+                  src="../assets/img/john_wick.jpg"
                   :alt="film.image"
                   height="200px"
-              ></v-img>
+              >
+              </v-img>
 
               <v-card-title>
                 {{ film.title }}
@@ -30,10 +60,10 @@
 
               <v-card-subtitle>
                 <h3><b>Lenght:</b>{{ film.length }} minutes</h3>
-                <h3><b>Rating:</b> {{ film.rating }}%</h3>
+                <h3><b>Rating:</b> {{ film.rating }}%</h3>ß
               </v-card-subtitle>
 
-              <v-card-text justify="space-around" align="left">
+              <v-card-text justify="space-around" align="center">
                 <v-chip class="ma-2" small color="red" dark height="10px" v-for="genre in film.genres"
                         :key="genre">
                   {{ genre }}
@@ -53,10 +83,14 @@ import {mapGetters, mapActions} from 'vuex';
 
 export default {
   name: 'Home',
-  data() {
-    return {}
-
-  },
+  data: () => ({
+    items: [
+      { title: 'Click Me' },
+      { title: 'Click Me' },
+      { title: 'Click Me' },
+      { title: 'Click Me 2' },
+    ],
+  }),
   computed: {
     ...mapGetters([
       "getFilms"
