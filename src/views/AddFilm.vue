@@ -6,31 +6,31 @@
         v-model="valid"
     >
       <v-text-field
-          v-model="name"
+          v-model="title"
           label="Title"
           required
       ></v-text-field>
 
       <v-text-field
-          v-model="email"
+          v-model="description"
           label="Description"
           required
       ></v-text-field>
 
       <v-text-field
-          v-model="email"
+          v-model="length"
           label="Lenght"
           required
       ></v-text-field>
 
       <v-text-field
-          v-model="email"
+          v-model="rating"
           label="Rating"
           required
       ></v-text-field>
 
       <v-text-field
-          v-model="email"
+          v-model="genres"
           label="Genres"
           required
       ></v-text-field>
@@ -38,12 +38,13 @@
       <v-file-input
           multiple
           label="File input"
+          v-model="image"
           prepend-icon="mdi-camera"
       ></v-file-input>
       <v-btn
           color="success"
           class="mr-4"
-          @click="validate"
+          @click="addFilm"
       >
         Add Film
       </v-btn>
@@ -54,6 +55,26 @@
 <script>
 export default {
   name: "AddFilm",
+  data() {
+    return {
+      newFilm: {
+        id: 0,
+        image: this.image,
+        title: this.title,
+        description: this.description,
+        length: this.length,
+        rating: this.rating,
+        genres: this.genres,
+      }
+    }
+  },
+  methods: {
+    addFilm() {
+      this.films.push(this.newFilm)
+      console.log(this.newFilm)
+      this.newFilm = ''
+    },
+  }
 }
 </script>
 
