@@ -7,30 +7,35 @@
     >
       <v-text-field
           v-model="title"
+          :rules="titleRules"
           label="Title"
           required
       ></v-text-field>
 
       <v-text-field
           v-model="description"
+          :rules="descriptionRules"
           label="Description"
           required
       ></v-text-field>
 
       <v-text-field
           v-model="length"
+          :rules="lengthRules"
           label="Lenght"
           required
       ></v-text-field>
 
       <v-text-field
           v-model="rating"
+          :rules="ratingRules"
           label="Rating"
           required
       ></v-text-field>
 
       <v-text-field
           v-model="genres"
+          :rules="genresRules"
           label="Genres"
           required
       ></v-text-field>
@@ -45,6 +50,7 @@
           color="success"
           class="mr-4"
           @click="addFilm"
+
       >
         Add Film
       </v-btn>
@@ -53,28 +59,57 @@
 </template>
 
 <script>
+import {mapMutations} from "vuex";
+
 export default {
   name: "AddFilm",
   data() {
     return {
+      valid: true,
+      titleRules: [
+        v => !!v || 'Title is required',
+      ],
+      descriptionRules: [
+        v => !!v || 'Description is required',
+      ],
+      lengthRules: [
+        v => !!v || 'Lenght is required',
+      ],
+      ratingRules: [
+        v => !!v || 'Rating is required',
+      ],
+      genresRules: [
+        v => !!v || 'Genres are required',
+      ],
       newFilm: {
         id: 0,
-        image: this.image,
-        title: this.title,
-        description: this.description,
-        length: this.length,
-        rating: this.rating,
-        genres: this.genres,
+        image: '',
+        title: '',
+        description: '',
+        length: '',
+        rating: '',
+        genres: '',
       }
     }
   },
   methods: {
+    ...mapMutations([
+      'ADD_FILM',
+      'ADD_WISHLIST',
+    ]),
     addFilm() {
-      this.films.push(this.newFilm)
-      console.log(this.newFilm)
-      this.newFilm = ''
+      if (this.$refs.form.validate()) {
+        this.newFilm.title = this.title
+        this.newFilm.description = this.description
+        this.newFilm.length = this.length
+        this.newFilm.rating = this.rating
+        this.newFilm.genres = this.genres
+        this.newFilm.image = 'default.jpg'
+        this.ADD_FILM(this.newFilm)
+        this.$router.go(-1)
+      }
     },
-  }
+  },
 }
 </script>
 

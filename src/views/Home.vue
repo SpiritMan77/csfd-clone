@@ -4,6 +4,11 @@
       <v-row align="center">
         <h1>Films</h1>
         <v-spacer></v-spacer>
+        <v-btn class="mx-2 " fab dark small color="red" to="/wishlist">
+          <v-icon dark flat>
+            mdi-heart
+          </v-icon>
+        </v-btn>
         <v-btn class="mx-2 " fab dark small color="red" to="/addfilm">
           <v-icon dark flat>
             mdi-plus
@@ -14,7 +19,7 @@
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                  class="mx-2 " fab dark small color="red"
+                  class="mx-2" fab dark small color="red"
                   v-bind="attrs"
                   v-on="on"
               >
@@ -23,34 +28,78 @@
                 </v-icon>
               </v-btn>
             </template>
+
+
             <v-list>
-              <v-list-item
-                  v-for="(film, index) in getFilms" :key="index"
-              >
-                <v-list-item-title v-for="genre in film.genres"
-                                   :key="genre">{{ film.genres[0] }}</v-list-item-title>
+              <h3>By Genre</h3>
+              <v-list-item>
+                <v-list-item-title>
+                  <!--                  <v-btn v-for="genre in getFilms.genres" :key="genre">-->
+                  <!--                    {{ genre | myFilter }}-->
+                  <!--                  </v-btn>-->
+                </v-list-item-title>
               </v-list-item>
             </v-list>
+
+            <v-list>
+              <h3>By Lenght</h3>
+              <v-list-item>
+                <v-list-item-title>
+                  <v-checkbox
+                      v-model="longest"
+                      label="Longest"
+                      color="red"
+                      value="longest"
+                      hide-details
+                  ></v-checkbox>
+                  <v-checkbox
+                      v-model="shortest"
+                      label="Shortest"
+                      color="red"
+                      value="shortest"
+                      hide-details
+                  ></v-checkbox>
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+
+            <v-list>
+              <h3>By Rating</h3>
+              <v-list-item>
+                <v-list-item-title>
+                  <v-checkbox
+                      v-model="best"
+                      label="Best"
+                      color="red"
+                      value="best"
+                      hide-details
+                  ></v-checkbox>
+                  <v-checkbox
+                      v-model="worst"
+                      label="Worst"
+                      color="red"
+                      value="worst"
+                      hide-details
+                  ></v-checkbox>
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+
           </v-menu>
         </div>
-        <!--        <v-btn class="mx-2 " fab dark small color="red">-->
-        <!--          <v-icon dark flat>-->
-        <!--            mdi-filter-->
-        <!--          </v-icon>-->
-        <!--        </v-btn>-->
       </v-row>
 
       <v-row class="justify-content-md-right">
         <v-col v-for="(film, index) in getFilms" :key="index" class="col-3">
-          <router-link @click.native="addCurrentFilm(index)" style="text-decoration: none; color: inherit;"
-                       to="/filmview">
+          <router-link @click.native="addCurrentFilm(film)" style="text-decoration: none; color: inherit;"
+                       :to="{name:'filmview', params: {id: film.id} }">
             <v-card
                 class="mx-auto"
             >
               <v-img
-                  src="../assets/img/john_wick.jpg"
+                  :src="require(`../assets/img/${film.image}`)"
                   :alt="film.image"
-                  height="200px"
+                  height="700px"
               >
               </v-img>
 
@@ -60,13 +109,13 @@
 
               <v-card-subtitle>
                 <h3><b>Lenght:</b>{{ film.length }} minutes</h3>
-                <h3><b>Rating:</b> {{ film.rating }}%</h3>ß
+                <h3><b>Rating:</b> {{ film.rating }}%</h3>
               </v-card-subtitle>
 
               <v-card-text justify="space-around" align="center">
                 <v-chip class="ma-2" small color="red" dark height="10px" v-for="genre in film.genres"
                         :key="genre">
-                  {{ genre }}
+                  {{ filmsss }}
                 </v-chip>
               </v-card-text>
 
@@ -79,33 +128,65 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
+// eslint-disable-next-line no-unused-vars
+// import {films} from "@/data/films";
+// import FilmView from "@/views/FilmView";
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
   name: 'Home',
-  data: () => ({
-    items: [
-      { title: 'Click Me' },
-      { title: 'Click Me' },
-      { title: 'Click Me' },
-      { title: 'Click Me 2' },
-    ],
-  }),
+  // components: {FilmView},
+  data() {
+    return {
+      longest: false,
+      shortest: false,
+      best: false,
+      worst: false,
+      // films,
+      // currentFilm: ['test'],
+    }
+  },
   computed: {
     ...mapGetters([
-      "getFilms"
+      'getFilms',
+      "getCurrentFilm"
     ]),
+    sortedArray: function() {
+      function compare(a, b) {
+        if (a < b)
+          return -1;
+        if (a > b)
+          return 1;
+        return 0;
+      }
+
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      return this.filmsss.sort(compare);
+    }
+    // CURRENT_FILM(film) {
+    //   return this.currentFilm == film
+    // }
   },
   methods: {
-    ...mapActions([
-      'currentFilm',
+    ...mapMutations([
+      'CURRENT_FILM',
     ]),
     addCurrentFilm(film) {
-      this.currentFilm(film);
+      this.CURRENT_FILM(film);
     },
   },
+  filters: {
+    myFilter: function (val, idx, getFilms) {
+      for (var i = 0; i < idx; i++) {
+        if (getFilms[i].genres === val.genres) {
+          return false;
+        }
+      }
+      return true;
+    }
+  },
   created() {
-    console.log('Log', this.getImage)
+    // console.log('Log', this.getFilms.image)
   }
 }
 </script>

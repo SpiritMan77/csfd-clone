@@ -11,7 +11,12 @@ const routes = [
         component: Home
     },
     {
-        path: '/filmview',
+        path: '*',
+        name: 'pagenotfound',
+        component: () => import('../views/PageNotFound.vue')
+    },
+    {
+        path: '/filmview/:id',
         name: 'filmview',
         component: () => import('../views/FilmView.vue'),
         props: { film: [] }
