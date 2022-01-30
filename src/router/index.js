@@ -19,7 +19,7 @@ const routes = [
         path: '/filmview/:id',
         name: 'filmview',
         component: () => import('../views/FilmView.vue'),
-        props: { film: [] }
+        props: true
     },
     {
         path: '/wishlist',

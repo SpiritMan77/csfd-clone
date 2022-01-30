@@ -34,9 +34,9 @@
               <h3>By Genre</h3>
               <v-list-item>
                 <v-list-item-title>
-                  <!--                  <v-btn v-for="genre in getFilms.genres" :key="genre">-->
-                  <!--                    {{ genre | myFilter }}-->
-                  <!--                  </v-btn>-->
+                                    <v-btn v-for="genre in getFilms.genres" :key="genre">
+                                      {{ genre }}
+                                    </v-btn>
                 </v-list-item-title>
               </v-list-item>
             </v-list>
@@ -90,9 +90,9 @@
       </v-row>
 
       <v-row class="justify-content-md-right">
-        <v-col v-for="(film, index) in getFilms" :key="index" class="col-3">
-          <router-link @click.native="addCurrentFilm(film)" style="text-decoration: none; color: inherit;"
-                       :to="{name:'filmview', params: {id: film.id} }">
+        <v-col v-for="film in getFilms" :key="film.id" class="col-3">
+          <router-link style="text-decoration: none; color: inherit;"
+                       :to="{name: 'filmview', params: {film: film, id: film.id}  }">
             <v-card
                 class="mx-auto"
             >
@@ -115,7 +115,7 @@
               <v-card-text justify="space-around" align="center">
                 <v-chip class="ma-2" small color="red" dark height="10px" v-for="genre in film.genres"
                         :key="genre">
-                  {{ filmsss }}
+                  {{ genre }}
                 </v-chip>
               </v-card-text>
 

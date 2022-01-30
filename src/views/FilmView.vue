@@ -7,17 +7,17 @@
             md="5"
             lg="6"
         >
-          <h3>Title: {{ getCurrentFilm.title }} </h3>
-          <h3>Description: {{ getCurrentFilm.description }} </h3>
-          <h3>Lenght: {{ getCurrentFilm.length }} min. </h3>
-          <h3>Rating: {{ getCurrentFilm.rating }}% </h3>
+          <h3>Title: {{ film.title }} </h3>
+          <h3>Description: {{ film.description }} </h3>
+          <h3>Lenght: {{ film.length }} min. </h3>
+          <h3>Rating: {{ film.rating }}% </h3>
           <h3>Genres:
-            <v-chip class="ma-2" small color="red" dark height="10px" v-for="genre in getCurrentFilm.genres"
+            <v-chip class="ma-2" small color="red" dark height="10px" v-for="genre in film.genres"
                     :key="genre">
               {{ genre }}
             </v-chip>
           </h3>
-          <v-btn class="mx-2 " fab dark small color="red" @click.native="addWishlist(getCurrentFilm)">
+          <v-btn class="mx-2 " fab dark small color="red" @click.native="addWishlist(film)">
             <v-icon dark flat>
               mdi-heart
             </v-icon>
@@ -31,10 +31,10 @@
             offset-lg="0"
         >
           <v-img
-              v-if="getCurrentFilm.image"
+              v-if="film.image"
               height="auto"
               width="auto"
-              :src="require(`../assets/img/${getCurrentFilm.image}`)"
+              :src="require(`../assets/img/${film.image}`)"
           ></v-img>
         </v-col>
       </v-row>
@@ -48,14 +48,12 @@ import {mapGetters, mapMutations} from 'vuex';
 
 export default {
   name: "FilmView",
-  props: ['film'],
+  props: ['film','id'],
   data() {
     return {}
   },
   computed: {
-    ...mapGetters([
-      'getCurrentFilm'
-    ]),
+
   },
   methods: {
     ...mapMutations([

@@ -22,7 +22,7 @@ export default new Vuex.Store({
       state.wishlist.push(film);
     },
     REMOVE_WISHLIST: (state, index) => {
-      state.films.splice(index, 1);
+      state.wishlist.splice(index, 1);
     },
   },
   getters: {
