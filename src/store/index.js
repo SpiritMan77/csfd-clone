@@ -15,9 +15,6 @@ export default new Vuex.Store({
     ADD_FILM: (state, film) => {
       state.films.push(film);
     },
-    CURRENT_FILM: (state, film) => {
-      state.currentFilm = film;
-    },
     ADD_WISHLIST: (state, film) => {
       state.wishlist.push(film);
     },
@@ -27,7 +24,6 @@ export default new Vuex.Store({
   },
   getters: {
     getFilms: state => state.films,
-    getCurrentFilm: state => state.currentFilm,
     getCategories: state => state.categories,
     getWishlist: state => state.wishlist,
   },

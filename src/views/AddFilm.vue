@@ -50,7 +50,6 @@
           color="success"
           class="mr-4"
           @click="addFilm"
-
       >
         Add Film
       </v-btn>

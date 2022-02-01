@@ -4,8 +4,8 @@
 
     <v-row class="justify-content-md-right">
       <v-col v-for="film in getWishlist" :key="film" class="col-3">
-        <router-link @click.native="addCurrentFilm(film)" style="text-decoration: none; color: inherit;"
-                     :to="{name:'filmview', params: {id: film.id} }">
+        <router-link style="text-decoration: none; color: inherit;"
+                     :to="{name:'filmview', params: {film: film, id: film.id} }">
           <v-card
               class="mx-auto"
           >
@@ -21,7 +21,7 @@
             </v-card-title>
 
             <v-card-subtitle>
-              <h3><b>Lenght:</b>{{ film.length }} minutes</h3>
+              <h3><b>Lenght:</b>{{ film.time}} minutes</h3>
               <h3><b>Rating:</b> {{ film.rating }}%</h3>
             </v-card-subtitle>
 

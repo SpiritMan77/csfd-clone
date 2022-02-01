@@ -15,78 +15,50 @@
           </v-icon>
         </v-btn>
 
-        <div class="text-center">
-          <v-menu offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                  class="mx-2" fab dark small color="red"
-                  v-bind="attrs"
-                  v-on="on"
-              >
-                <v-icon dark flat>
-                  mdi-filter
-                </v-icon>
-              </v-btn>
-            </template>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                class="mx-2" fab dark small color="red"
+                v-bind="attrs"
+                v-on="on"
+            >
+              <v-icon dark flat>
+                mdi-filter
+              </v-icon>
+            </v-btn>
+          </template>
 
 
-            <v-list>
-              <h3>By Genre</h3>
-              <v-list-item>
-                <v-list-item-title>
-                                    <v-btn v-for="genre in getFilms.genres" :key="genre">
-                                      {{ genre }}
-                                    </v-btn>
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
+          <v-list>
+            <h3>By Genre</h3>
+            <v-list-item>
+              <v-list-item-title>
 
-            <v-list>
-              <h3>By Lenght</h3>
-              <v-list-item>
-                <v-list-item-title>
-                  <v-checkbox
-                      v-model="longest"
-                      label="Longest"
-                      color="red"
-                      value="longest"
-                      hide-details
-                  ></v-checkbox>
-                  <v-checkbox
-                      v-model="shortest"
-                      label="Shortest"
-                      color="red"
-                      value="shortest"
-                      hide-details
-                  ></v-checkbox>
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
 
-            <v-list>
-              <h3>By Rating</h3>
-              <v-list-item>
-                <v-list-item-title>
-                  <v-checkbox
-                      v-model="best"
-                      label="Best"
-                      color="red"
-                      value="best"
-                      hide-details
-                  ></v-checkbox>
-                  <v-checkbox
-                      v-model="worst"
-                      label="Worst"
-                      color="red"
-                      value="worst"
-                      hide-details
-                  ></v-checkbox>
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
+          <v-list>
+            <h3>By Lenght</h3>
+            <v-list-item>
+              <v-list-item-title>
+                <v-btn v-on:click="filterBy('lenght')">
+                  Length
+                </v-btn>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
 
-          </v-menu>
-        </div>
+          <v-list>
+            <h3>By Rating</h3>
+            <v-list-item>
+              <v-list-item-title>
+                <v-btn v-on:click="filterBy('rating')">Rating
+                </v-btn>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-row>
 
       <v-row class="justify-content-md-right">
@@ -108,7 +80,7 @@
               </v-card-title>
 
               <v-card-subtitle>
-                <h3><b>Lenght:</b>{{ film.length }} minutes</h3>
+                <h3><b>Lenght:</b>{{ film.time }} minutes</h3>
                 <h3><b>Rating:</b> {{ film.rating }}%</h3>
               </v-card-subtitle>
 
@@ -128,66 +100,73 @@
 </template>
 
 <script>
-// eslint-disable-next-line no-unused-vars
-// import {films} from "@/data/films";
-// import FilmView from "@/views/FilmView";
-import {mapGetters, mapMutations} from 'vuex';
+import {mapGetters} from 'vuex';
 
 export default {
   name: 'Home',
-  // components: {FilmView},
   data() {
     return {
+      sortDirection: 'ASC',
       longest: false,
       shortest: false,
       best: false,
       worst: false,
-      // films,
-      // currentFilm: ['test'],
+      outGenres: [],
     }
   },
   computed: {
     ...mapGetters([
       'getFilms',
-      "getCurrentFilm"
     ]),
-    sortedArray: function() {
-      function compare(a, b) {
-        if (a < b)
-          return -1;
-        if (a > b)
-          return 1;
-        return 0;
-      }
-
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      return this.filmsss.sort(compare);
-    }
-    // CURRENT_FILM(film) {
-    //   return this.currentFilm == film
-    // }
   },
   methods: {
-    ...mapMutations([
-      'CURRENT_FILM',
-    ]),
-    addCurrentFilm(film) {
-      this.CURRENT_FILM(film);
-    },
-  },
-  filters: {
-    myFilter: function (val, idx, getFilms) {
-      for (var i = 0; i < idx; i++) {
-        if (getFilms[i].genres === val.genres) {
-          return false;
+    filterBy(by) {
+      if (by == this.sortBy) {
+        if (this.sortDirection == 'ASC') {
+          this.sortDirection = 'DESC';
+        } else {
+          this.sortDirection = 'ASC';
         }
       }
-      return true;
+
+      if (by != this.sortBy) {
+        this.sortDirection = 'ASC';
+        this.sortBy = by;
+      }
+
+      switch (this.sortBy) {
+        case 'lenght':
+          this.sortFilmsByLength();
+          break;
+        case 'rating':
+          this.sortFilmsByRate();
+          break;
+      }
+    },
+    sortFilmsByLength() {
+      this.getFilms.sort(function (a, b) {
+        if (this.sortDirection == 'ASC') {
+          return parseInt(a.time) < parseInt(b.time) ? 1 : -1;
+        }
+
+        if (this.sortDirection == 'DESC') {
+          return parseInt(a.time) > parseInt(b.time) ? 1 : -1;
+        }
+      }.bind(this));
+    },
+
+    sortFilmsByRate() {
+      this.getFilms.sort(function (a, b) {
+        if (this.sortDirection == 'ASC') {
+          return parseInt(a.rating) < parseInt(b.rating) ? 1 : -1;
+        }
+
+        if (this.sortDirection == 'DESC') {
+          return parseInt(a.rating) > parseInt(b.rating) ? 1 : -1;
+        }
+      }.bind(this));
     }
   },
-  created() {
-    // console.log('Log', this.getFilms.image)
-  }
 }
 </script>
 <style>

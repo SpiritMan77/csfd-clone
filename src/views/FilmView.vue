@@ -9,7 +9,7 @@
         >
           <h3>Title: {{ film.title }} </h3>
           <h3>Description: {{ film.description }} </h3>
-          <h3>Lenght: {{ film.length }} min. </h3>
+          <h3>Lenght: {{ film.time }} min. </h3>
           <h3>Rating: {{ film.rating }}% </h3>
           <h3>Genres:
             <v-chip class="ma-2" small color="red" dark height="10px" v-for="genre in film.genres"
@@ -44,17 +44,15 @@
 </template>
 
 <script>
-import {mapGetters, mapMutations} from 'vuex';
+import {mapMutations} from 'vuex';
 
 export default {
   name: "FilmView",
-  props: ['film','id'],
+  props: ['film', 'id'],
   data() {
     return {}
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
     ...mapMutations([
       'ADD_WISHLIST',
