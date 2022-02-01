@@ -13,13 +13,18 @@
           <h3>Rating: {{ film.rating }}% </h3>
           <h3>Genres:
             <v-chip class="ma-2" small color="red" dark height="10px" v-for="genre in film.genres"
-                    :key="genre">
+                    :key="genre.genre">
               {{ genre }}
             </v-chip>
           </h3>
           <v-btn class="mx-2 " fab dark small color="red" @click.native="addWishlist(film)">
             <v-icon dark flat>
               mdi-heart
+            </v-icon>
+          </v-btn>
+          <v-btn class="mx-2 " fab dark small color="red" v-if="getWishlist>=1" @click.native="removeWishlist(film)">
+            <v-icon dark flat>
+              mdi-cancel
             </v-icon>
           </v-btn>
         </v-col>
@@ -44,7 +49,7 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex';
+import {mapMutations, mapGetters} from 'vuex';
 
 export default {
   name: "FilmView",
@@ -52,13 +57,21 @@ export default {
   data() {
     return {}
   },
-  computed: {},
+  computed: {
+    ...mapGetters([
+      'getWishlist'
+    ]),
+  },
   methods: {
     ...mapMutations([
       'ADD_WISHLIST',
+      'REMOVE_WISHLIST',
     ]),
     addWishlist(film) {
       this.ADD_WISHLIST(film)
+    },
+    removeWishlist(film) {
+      this.REMOVE_WISHLIST(film)
     }
   }
 }

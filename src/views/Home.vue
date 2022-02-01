@@ -173,8 +173,4 @@ export default {
 .home {
   overflow: hidden;
 }
-
-.chip {
-  padding-left: 0;
-}
 </style>

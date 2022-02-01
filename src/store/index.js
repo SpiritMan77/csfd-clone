@@ -7,7 +7,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     films: Films.films,
-    currentFilm: {},
     categories: [],
     wishlist: [],
   },

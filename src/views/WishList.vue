@@ -3,7 +3,7 @@
     <h1>Wishlist</h1>
 
     <v-row class="justify-content-md-right">
-      <v-col v-for="film in getWishlist" :key="film" class="col-3">
+      <v-col v-for="film in getWishlist" :key="film.id" class="col-3">
         <router-link style="text-decoration: none; color: inherit;"
                      :to="{name:'filmview', params: {film: film, id: film.id} }">
           <v-card
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import {mapGetters, mapMutations} from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   name: "WishList",
@@ -51,12 +51,6 @@ export default {
     ]),
   },
   methods: {
-    ...mapMutations([
-      'CURRENT_FILM',
-    ]),
-    addCurrentFilm(film) {
-      this.CURRENT_FILM(film);
-    },
   },
 }
 </script>
